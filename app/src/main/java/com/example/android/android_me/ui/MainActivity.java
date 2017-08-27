@@ -112,8 +112,6 @@ public class MainActivity extends AppCompatActivity implements MasterListFragmen
         // Create a Toast that displays the position that was clicked
         Toast.makeText(this, "Position clicked = " + position, Toast.LENGTH_SHORT).show();
 
-        // Based on where a user has clicked, store the selected list index for the head, body, and leg BodyPartFragments
-
         // bodyPartNumber will be = 0 for the head fragment, 1 for the body, and 2 for the leg fragment
         // Dividing by 12 gives us these integer values because each list of images resources has a size of 12
         int bodyPartNumber = position /12;
@@ -122,19 +120,24 @@ public class MainActivity extends AppCompatActivity implements MasterListFragmen
         // This ensures that the index will always be a value between 0-11
         int listIndex = position - 12*bodyPartNumber;
 
+        // Handle the two-pane case and replace existing fragments right when a new image is selected from the master list
+        if (mTwoPane) {
+            // Create two=pane interaction
 
-        if(mTwoPane){
             BodyPartFragment newFragment = new BodyPartFragment();
 
-            switch(bodyPartNumber){
+            // Set the currently displayed item for the correct body part fragment
+            switch (bodyPartNumber) {
                 case 0:
+                    // A head image has been clicked
+                    // Give the correct image resources to the new fragment
                     newFragment.setImageIds(AndroidImageAssets.getHeads());
                     newFragment.setListIndex(listIndex);
+                    // Replace the old head fragment with a new one
                     getSupportFragmentManager().beginTransaction()
                             .replace(R.id.head_container, newFragment)
                             .commit();
                     break;
-
                 case 1:
                     newFragment.setImageIds(AndroidImageAssets.getBodies());
                     newFragment.setListIndex(listIndex);
@@ -142,7 +145,6 @@ public class MainActivity extends AppCompatActivity implements MasterListFragmen
                             .replace(R.id.body_container, newFragment)
                             .commit();
                     break;
-
                 case 2:
                     newFragment.setImageIds(AndroidImageAssets.getLegs());
                     newFragment.setListIndex(listIndex);
@@ -150,24 +152,25 @@ public class MainActivity extends AppCompatActivity implements MasterListFragmen
                             .replace(R.id.leg_container, newFragment)
                             .commit();
                     break;
-
                 default:
                     break;
             }
+        } else {
 
+            // Handle the single-pane phone case by passing information in a Bundle attached to an Intent
 
-        } else{
-
-
-            // Set the currently displayed item for the correct body part fragment
-            switch(bodyPartNumber) {
-                case 0: headIndex = listIndex;
+            switch (bodyPartNumber) {
+                case 0:
+                    headIndex = listIndex;
                     break;
-                case 1: bodyIndex = listIndex;
+                case 1:
+                    bodyIndex = listIndex;
                     break;
-                case 2: legIndex = listIndex;
+                case 2:
+                    legIndex = listIndex;
                     break;
-                default: break;
+                default:
+                    break;
             }
 
             // Put this information in a Bundle and attach it to an Intent that will launch an AndroidMeActivity
@@ -188,11 +191,7 @@ public class MainActivity extends AppCompatActivity implements MasterListFragmen
                     startActivity(intent);
                 }
             });
-
         }
 
     }
-
-
-
 }
