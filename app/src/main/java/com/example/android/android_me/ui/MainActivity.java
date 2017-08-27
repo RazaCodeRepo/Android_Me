@@ -48,15 +48,15 @@ public class MainActivity extends AppCompatActivity implements MasterListFragmen
         setContentView(R.layout.activity_main);
 
 
-        if(findViewById(R.id.android_me_linear_layout) != null){
+        if (findViewById(R.id.android_me_linear_layout) != null) {
             mTwoPane = true;
-            Button nextButton = (Button)findViewById(R.id.next_button);
+            Button nextButton = (Button) findViewById(R.id.next_button);
             nextButton.setVisibility(View.GONE);
 
-            GridView gridView = (GridView)findViewById(R.id.images_grid_view);
+            GridView gridView = (GridView) findViewById(R.id.images_grid_view);
             gridView.setNumColumns(2);
 
-            if(savedInstanceState == null) {
+            if (savedInstanceState == null) {
 
                 // Retrieve list index values that were sent through an intent; use them to display the desired Android-Me body part image
                 // Use setListindex(int index) to set the list index for all BodyPartFragments
@@ -98,11 +98,12 @@ public class MainActivity extends AppCompatActivity implements MasterListFragmen
                 fragmentManager.beginTransaction()
                         .add(R.id.leg_container, legFragment)
                         .commit();
-            } else{
+            } else {
                 mTwoPane = false;
 
+            }
         }
-        }
+
 
 
     }
